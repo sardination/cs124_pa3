@@ -1,3 +1,5 @@
+NOTE: EVERYTHING is now in kk.cpp (not partition.cpp)
+
 0. main method and user input (K)
 
 1. Karmarkar-Karp algorithm (K)
