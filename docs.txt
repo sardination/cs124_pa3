@@ -1,0 +1,19 @@
+0. main method and user input (K)
+
+1. Karmarkar-Karp algorithm (K)
+
+2. Repeated random method (K)
+
+3. Hill climbing method (S)
+
+4. Simulated annealing method (S)
+
+6. +/1 representation (K)
+  - make random solution
+  - make neighbor
+
+7. prepartitioning representation (S)
+
+--
+
+5. makefile
