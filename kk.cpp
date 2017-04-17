@@ -1,4 +1,23 @@
+#include <stdint.h>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#define DELTATIME(end, begin) (std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count()/1000.0)
+
+using namespace std;
+
 int max_iter = 25000
+
+int64_t karkarp(vector<int64_t>& a);
+int64_t reprand(vector<int64_t>& a);
+int64_t climbing(vector<int64_t>& a);
+int64_t annealing(vector<int64_t>& a);
+vector<bool> makerand_standard(int n);
+vector<bool> neighbor_standard(vector<bool>& s);
+int64_t residue_standard(vector<int64_t>& a, vector<bool>& s);
+vector<int> makerand_prepart(int n);
+vector<int> neighbor_prepart(vector<int>& p);
+int64_t residue_prepart(vector<int64_t>& a, vector<int>& p);
 
 int main(int argc, char *argv[]) {
 
@@ -19,7 +38,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void karkarp(){
+int64_t karkarp(vector<int64_t>& a){
 
   // use mergesort to sort the vector
 
@@ -32,7 +51,7 @@ void karkarp(){
 }
 
 // temporarily written assuming the standard representation
-void reprand(){
+int64_t reprand(vector<int64_t>& a){
   s = makerand_standard();
   for (int i = 0; i < max_iter; i++){
     s_new = makerand_standard();
@@ -44,36 +63,35 @@ void reprand(){
   return s;
 }
 
-void climbing(){
+int64_t climbing(vector<int64_t>& a){
 
 }
 
-void annealing(){
+int64_t annealing(vector<int64_t>& a){
 
 }
 
-void makerand_standard(){
-
-
-}
-
-void neighbor_standard(){
-
+vector<bool> makerand_standard(int n){
 
 }
 
-void residue_standard(){
+vector<bool> neighbor_standard(vector<bool>& s){
 
 }
 
-void makerand_prepart(){
+int64_t residue_standard(vector<int64_t>& a, vector<bool>& s){
 
 }
 
-void neighbor_prepart(){
+vector<int> makerand_prepart(int n){
 
 }
 
-void residue_prepart(){
+vector<int> neighbor_prepart(vector<int>& p){
 
 }
+
+int64_t residue_prepart(vector<int64_t>& a, vector<int>& p){
+
+}
+
