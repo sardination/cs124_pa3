@@ -86,7 +86,21 @@ int64_t reprand(vector<int64_t>& a, bool stan){
 }
 
 int64_t climbing(vector<int64_t>& a, bool stan){
+  int n = a.size();
+  int64_t resid;
 
+  if (stan) {
+    vector<bool> s = makerand_standard(n);
+    resid = residue_standard(a,s);
+    for (int i=0; i < max_iter; i++) {
+      vector<bool> neighbor = neighbor_standard(s);
+      resid = max(resid,residue_standard(a, neighbor));
+
+    }
+  } else {
+    vector<int> p = makerand_prepart(n);
+    
+  }
 }
 
 int64_t annealing(vector<int64_t>& a, bool stan){
@@ -153,7 +167,7 @@ vector<int> makerand_prepart(int n){
 
 // takes prepartioning p, returns a neighbor solution
 vector<int> neighbor_prepart(vector<int>& p){
-  int n = v.size();
+  int n = p.size();
   int i = rand() % n;
   int j = rand() % n;
   while (p[i] == j) {
