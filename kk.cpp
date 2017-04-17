@@ -1,7 +1,10 @@
+#include <stdlib.h>
+#include <time.h>
 #include <stdint.h>
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <limits.h>
 #define DELTATIME(end, begin) (std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count()/1000.0)
 
 using namespace std;
@@ -55,6 +58,7 @@ int64_t karkarp(vector<int64_t>& aprime){
 
 int64_t reprand(vector<int64_t>& a, bool stan){
   int n = a.size();
+  int64_t resid = LONG_MAX;
 
   if (stan) {
     vector<bool> s = makerand_standard(n);
@@ -66,8 +70,6 @@ int64_t reprand(vector<int64_t>& a, bool stan){
         resid = resid_new;
       }
     }
-
-    return resid;
   }
   else {
     vector<int> p = makerand_prepart(n);
@@ -79,9 +81,9 @@ int64_t reprand(vector<int64_t>& a, bool stan){
         resid = resid_new;
       }
     }
-
-    return resid;
   }
+
+  return resid;
 }
 
 int64_t climbing(vector<int64_t>& a, bool stan){
@@ -93,11 +95,35 @@ int64_t annealing(vector<int64_t>& a, bool stan){
 }
 
 vector<bool> makerand_standard(int n){
+  vector<bool> s(n);
 
+  for (int i = 0; i < n; i++){
+    if (rand() % 2 == 1){
+      s[i] = true;
+    }
+  }
+
+  return s;
 
 }
 
 vector<bool> neighbor_standard(vector<bool>& s){
+  int n = s.size();
+  vector<bool> s_new = s;
+
+  // choose two random elements
+  int i = rand() % n;
+  int j = i;
+  while (j == i){
+    j = rand() % n;
+  }
+
+  s_new[i] = !s_new[i];
+  if (rand() % 2 == 1){
+    s_new[j] = !s_new[j];
+  }
+
+  return s_new;
 
 }
 
