@@ -1,3 +1,4 @@
+#include <queue>
 #include <stdlib.h>
 #include <time.h>
 #include <stdint.h>
@@ -44,24 +45,36 @@ int main(int argc, char *argv[]) {
 }
 
 int64_t karkarp(vector<int64_t>& aprime){
+  int n = aprime.size();
 
   // place all into a heap
+  priority_queue<int64_t> q;
+
+  for (int i = 0; i < n; i++){
+    q.push(aprime[i]);
+  }
 
   // while the size is greater than 1,
+  for (int j = 0; j < n - 1; j++){
+    // find the difference between the two greatest elements and reinsert it
+    int64_t first = q.top();
+    q.pop();
+    int64_t second = q.top();
+    q.pop();
+    int64_t diff = abs(first - second);
+    q.push(diff);
+  }
 
-    // find the difference between the two greatest elements
-
-    // place this difference at the
-
+  return (q.top());
 }
 
 int64_t reprand(vector<int64_t>& a, bool stan){
   int n = a.size();
-  int64_t resid = LONG_MAX;
+  int64_t resid;
 
   if (stan) {
     vector<bool> s = makerand_standard(n);
-    int64_t resid = residue_standard(a, s);
+    resid = residue_standard(a, s);
     for (int i = 0; i < max_iter; i++){
       vector<bool> s_new = makerand_standard(n);
       int64_t resid_new = residue_standard(a, s_new);
@@ -72,10 +85,12 @@ int64_t reprand(vector<int64_t>& a, bool stan){
   }
   else {
     vector<int> p = makerand_prepart(n);
-    int64_t resid = residue_prepart(a, p);
+    vector<int64_t> aprime = partition(a, p);
+    resid = karkarp(aprime);
     for (int i = 0; i < max_iter; i++){
       vector<int> p_new = makerand_prepart(n);
-      int64_t resid_new = residue_prepart(a, p_new);
+      aprime = partition(a, p_new);
+      int64_t resid_new = karkarp(aprime);
       if (resid_new < resid){
         resid = resid_new;
       }
