@@ -112,14 +112,18 @@ int64_t reprand(vector<int64_t>& a, bool stan){
 int64_t climbing(vector<int64_t>& a, bool stan){
   int n = a.size();
   int64_t resid;
+  int64_t resid_neighbor;
 
   if (stan) {
     vector<bool> s = makerand_standard(n);
     resid = residue_standard(a,s);
     for (int i=0; i < max_iter; i++) {
       vector<bool> neighbor = neighbor_standard(s);
-      resid = max(resid,residue_standard(a, neighbor));
-
+      resid_neighbor = residue_standard(a, neighbor);
+      if (resid_neighbor < resid) {
+        s = neighbor;
+        resid = resid_neighbor;
+      }
     }
   } else {
     vector<int> p = makerand_prepart(n);
@@ -128,7 +132,11 @@ int64_t climbing(vector<int64_t>& a, bool stan){
     for (int i = 0; i < max_iter; i++) {
       vector<int> neighbor = neighbor_prepart(p);
       aprime = partition(a, neighbor);
-      resid = max(resid, karkarp(aprime));
+      resid_neighbor = karkarp(aprime);
+      if (resid_neighbor < resid) {
+        s = neighbor;
+        resid = resid_neighbor;
+      }
     }
   }
 
@@ -137,14 +145,67 @@ int64_t climbing(vector<int64_t>& a, bool stan){
 
 int64_t annealing(vector<int64_t>& a, bool stan){
   int n = a.size();
-  int64_t resid;
+  int64_t current_residue; //S''
+  int64_t testing_residue; //S
+  int64_t neighbor_residue; //S'
 
   if (stan) {
-    vector<bool> s = makerand_standard(n);
-    resid = residue_standard(a,s);
-  } else {
+    vector<bool> testing = makerand_standard(n); //S
+    testing_residue = residue_standard(a,s);
+    vector<bool> current = testing; //S''
+    current_residue = testing_residue;
 
+    for (int i = 0; i < max_iter; i++) {
+      vector<bool> neighbor = neighbor_standard(s); //S'
+      neighbor_residue = residue_standard(neighbor); //S'
+      if (neighbor_residue < testing_residue) {
+        testing = neighbor;
+        testing_residue = neighbor_residue;
+      } else {
+        double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
+        double random_assign = (double)rand() / RAND_MAX;
+        if (random_assign < prob) {
+          testing = neighbor;
+          testing_residue = neighbor_residue;
+        }
+      }
+
+      if (testing_residue < current_residue) {
+        current = testing;
+        current_residue = testing_residue
+      }
+    }
+  } else {
+    vector<int> testing = makerand_prepart(n); //P
+    vector<int64_t> aprime = partition(a,p);
+    testing_residue = karkarp(aprime);
+    vector<int> current = testing; //P''
+    current_residue = testing_residue;
+
+    for (int i = 0; i < max_iter; i++) {
+      vector<int> neighbor = neighbor_prepart(testing); //P'
+      aprime = partition(a, neighbor);
+      neighbor_residue = karkarp(aprime); //P'
+      if (neighbor_residue < testing_residue) {
+        testing = neighbor;
+        testing_residue = neighbor_residue;
+      } else {
+        double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
+        double random_assign = (double)rand() / RAND_MAX;
+        if (random_assign < prob) {
+          testing = neighbor;
+          testing_residue = neighbor_residue;
+        }
+      }
+
+      if (testing_residue < current_residue) {
+        current = testing;
+        current_residue = testing_residue
+      }
+    }
   }
+
+  return current_residue;
 }
 
 vector<bool> makerand_standard(int n){
