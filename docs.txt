@@ -4,8 +4,6 @@ NOTE: EVERYTHING is now in kk.cpp (not partition.cpp)
 
 1. Karmarkar-Karp algorithm (K)
 
-2. Repeated random method (K)
-
 3. Hill climbing method (S)
 
 4. Simulated annealing method (S)
@@ -19,3 +17,5 @@ NOTE: EVERYTHING is now in kk.cpp (not partition.cpp)
 -- finished:
 
 5. makefile
+
+2. Repeated random method (K)
