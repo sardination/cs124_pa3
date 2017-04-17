@@ -16,6 +16,6 @@ NOTE: EVERYTHING is now in kk.cpp (not partition.cpp)
 
 7. prepartitioning representation (S)
 
---
+-- finished:
 
 5. makefile

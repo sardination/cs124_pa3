@@ -6,12 +6,12 @@
 
 using namespace std;
 
-int max_iter = 25000
+int max_iter = 25000;
 
 int64_t karkarp(vector<int64_t>& a);
-int64_t reprand(vector<int64_t>& a);
-int64_t climbing(vector<int64_t>& a);
-int64_t annealing(vector<int64_t>& a);
+int64_t reprand(vector<int64_t>& a, bool stan);
+int64_t climbing(vector<int64_t>& a, bool stan);
+int64_t annealing(vector<int64_t>& a, bool stan);
 vector<bool> makerand_standard(int n);
 vector<bool> neighbor_standard(vector<bool>& s);
 int64_t residue_standard(vector<int64_t>& a, vector<bool>& s);
@@ -35,12 +35,14 @@ int main(int argc, char *argv[]) {
 
     // for each, find the result using 7 different methods
 
+  cout << "hello!" << endl;
+
   return 0;
 }
 
 int64_t karkarp(vector<int64_t>& a){
 
-  // use mergesort to sort the vector
+  // place all into a heap
 
   // while the size is greater than 1,
 
@@ -51,7 +53,9 @@ int64_t karkarp(vector<int64_t>& a){
 }
 
 // temporarily written assuming the standard representation
-int64_t reprand(vector<int64_t>& a){
+int64_t reprand(vector<int64_t>& a, bool stan){
+  int n = a.size;
+
   s = makerand_standard();
   for (int i = 0; i < max_iter; i++){
     s_new = makerand_standard();
@@ -63,11 +67,11 @@ int64_t reprand(vector<int64_t>& a){
   return s;
 }
 
-int64_t climbing(vector<int64_t>& a){
+int64_t climbing(vector<int64_t>& a, bool stan){
 
 }
 
-int64_t annealing(vector<int64_t>& a){
+int64_t annealing(vector<int64_t>& a, bool stan){
 
 }
 
