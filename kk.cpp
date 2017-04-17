@@ -15,6 +15,7 @@ int max_iter = 25000;
 int64_t karkarp(vector<int64_t>& aprime);
 int64_t reprand(vector<int64_t>& a, bool stan);
 int64_t climbing(vector<int64_t>& a, bool stan);
+void random_assign(vector<int64_t>& neighbor, vector<int64_t>& testing; int64_t neighbor_residue, int64_t& testing_residue);
 int64_t annealing(vector<int64_t>& a, bool stan);
 vector<bool> makerand_standard(int n);
 vector<bool> neighbor_standard(vector<bool>& s);
