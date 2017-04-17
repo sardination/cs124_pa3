@@ -23,7 +23,7 @@ vector<int> neighbor_prepart(vector<int>& p);
 vector<int64_t> partition(vector<int64_t>& a, vector<int>& p);
 
 int main(int argc, char *argv[]) {
-
+  srand(time(NULL));
   // read in input from user
   if (argc != 2) {
     cout << "Failure: incorrect number of arguments\n";
