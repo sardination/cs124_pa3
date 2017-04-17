@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <limits.h>
+#include <math.h>
 #define DELTATIME(end, begin) (std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count()/1000.0)
 
 using namespace std;
@@ -15,7 +16,6 @@ int max_iter = 25000;
 int64_t karkarp(vector<int64_t>& aprime);
 int64_t reprand(vector<int64_t>& a, bool stan);
 int64_t climbing(vector<int64_t>& a, bool stan);
-void random_assign(vector<int64_t>& neighbor, vector<int64_t>& testing; int64_t neighbor_residue, int64_t& testing_residue);
 int64_t annealing(vector<int64_t>& a, bool stan);
 vector<bool> makerand_standard(int n);
 vector<bool> neighbor_standard(vector<bool>& s);
@@ -135,7 +135,7 @@ int64_t climbing(vector<int64_t>& a, bool stan){
       aprime = partition(a, neighbor);
       resid_neighbor = karkarp(aprime);
       if (resid_neighbor < resid) {
-        s = neighbor;
+        p = neighbor;
         resid = resid_neighbor;
       }
     }
@@ -144,14 +144,6 @@ int64_t climbing(vector<int64_t>& a, bool stan){
   return resid;
 }
 
-void random_assign(vector<int64_t>& neighbor, vector<int64_t>& testing; int64_t neighbor_residue, int64_t& testing_residue) {
-  double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
-  double random_assign = (double)rand() / RAND_MAX;
-  if (random_assign < prob) {
-    testing = neighbor;
-    testing_residue = neighbor_residue;
-  }
-}
 
 int64_t annealing(vector<int64_t>& a, bool stan){
   int n = a.size();
@@ -161,28 +153,33 @@ int64_t annealing(vector<int64_t>& a, bool stan){
 
   if (stan) {
     vector<bool> testing = makerand_standard(n); //S
-    testing_residue = residue_standard(a,s);
+    testing_residue = residue_standard(a,testing);
     vector<bool> current = testing; //S''
     current_residue = testing_residue;
 
     for (int i = 0; i < max_iter; i++) {
-      vector<bool> neighbor = neighbor_standard(s); //S'
-      neighbor_residue = residue_standard(neighbor); //S'
+      vector<bool> neighbor = neighbor_standard(testing); //S'
+      neighbor_residue = residue_standard(a,neighbor); //S'
       if (neighbor_residue < testing_residue) {
         testing = neighbor;
         testing_residue = neighbor_residue;
       } else {
-        random_assign(neighbor,testing,neighbor_residue,testing_residue);
+        double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
+        double random_assign = (double)rand() / RAND_MAX;
+        if (random_assign < prob) {
+          testing = neighbor;
+          testing_residue = neighbor_residue;
+        }
       }
 
       if (testing_residue < current_residue) {
         current = testing;
-        current_residue = testing_residue
+        current_residue = testing_residue;
       }
     }
   } else {
     vector<int> testing = makerand_prepart(n); //P
-    vector<int64_t> aprime = partition(a,p);
+    vector<int64_t> aprime = partition(a,testing);
     testing_residue = karkarp(aprime);
     vector<int> current = testing; //P''
     current_residue = testing_residue;
@@ -195,12 +192,17 @@ int64_t annealing(vector<int64_t>& a, bool stan){
         testing = neighbor;
         testing_residue = neighbor_residue;
       } else {
-        random_assign(neighbor,testing,neighbor_residue,testing_residue);
+        double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
+        double random_assign = (double)rand() / RAND_MAX;
+        if (random_assign < prob) {
+          testing = neighbor;
+          testing_residue = neighbor_residue;
+        }
       }
 
       if (testing_residue < current_residue) {
         current = testing;
-        current_residue = testing_residue
+        current_residue = testing_residue;
       }
     }
   }
@@ -253,7 +255,7 @@ int64_t residue_standard(vector<int64_t>& a, vector<bool>& s){
       res -= a[i];
     }
   }
-
+  return res;
 }
 
 // returns prepartioning p
