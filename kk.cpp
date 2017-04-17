@@ -32,6 +32,15 @@ int main(int argc, char *argv[]) {
   }
 
   // open and read inputfile
+  vector<int64_t> a;
+  string fileName = argv[1];
+  string line;
+  ifstream infile(fileName);
+  if (infile.is_open()) {
+    while (getline (infile, line)) {
+      a.push_back(atoi(line.c_str()));
+    }
+  }
 
   // find and return result of running kk
 
@@ -116,10 +125,10 @@ int64_t climbing(vector<int64_t>& a, bool stan){
     vector<int> p = makerand_prepart(n);
     vector<int64_t> aprime = partition(a,p);
     resid = karkarp(aprime);
-    for (int i=0; i<max_iter; i++) {
+    for (int i = 0; i < max_iter; i++) {
       vector<int> neighbor = neighbor_prepart(p);
-      aprime = partitin(a,neighbor);
-      resid = max(resid,karkarp(aprime));
+      aprime = partition(a, neighbor);
+      resid = max(resid, karkarp(aprime));
     }
   }
 
