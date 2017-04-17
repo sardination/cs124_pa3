@@ -127,7 +127,15 @@ int64_t climbing(vector<int64_t>& a, bool stan){
 }
 
 int64_t annealing(vector<int64_t>& a, bool stan){
+  int n = a.size();
+  int64_t resid;
 
+  if (stan) {
+    vector<bool> s = makerand_standard(n);
+    resid = residue_standard(a,s);
+  } else {
+
+  }
 }
 
 vector<bool> makerand_standard(int n){
