@@ -114,8 +114,16 @@ int64_t climbing(vector<int64_t>& a, bool stan){
     }
   } else {
     vector<int> p = makerand_prepart(n);
-    
+    vector<int64_t> aprime = partition(a,p);
+    resid = karkarp(aprime);
+    for (int i=0; i<max_iter; i++) {
+      vector<int> neighbor = neighbor_prepart(p);
+      aprime = partitin(a,neighbor);
+      resid = max(resid,karkarp(aprime));
+    }
   }
+
+  return resid;
 }
 
 int64_t annealing(vector<int64_t>& a, bool stan){
