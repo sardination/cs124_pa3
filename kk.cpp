@@ -143,6 +143,15 @@ int64_t climbing(vector<int64_t>& a, bool stan){
   return resid;
 }
 
+void random_assign(vector<int64_t>& neighbor, vector<int64_t>& testing; int64_t neighbor_residue, int64_t& testing_residue) {
+  double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
+  double random_assign = (double)rand() / RAND_MAX;
+  if (random_assign < prob) {
+    testing = neighbor;
+    testing_residue = neighbor_residue;
+  }
+}
+
 int64_t annealing(vector<int64_t>& a, bool stan){
   int n = a.size();
   int64_t current_residue; //S''
@@ -162,12 +171,7 @@ int64_t annealing(vector<int64_t>& a, bool stan){
         testing = neighbor;
         testing_residue = neighbor_residue;
       } else {
-        double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
-        double random_assign = (double)rand() / RAND_MAX;
-        if (random_assign < prob) {
-          testing = neighbor;
-          testing_residue = neighbor_residue;
-        }
+        random_assign(neighbor,testing,neighbor_residue,testing_residue);
       }
 
       if (testing_residue < current_residue) {
@@ -190,12 +194,7 @@ int64_t annealing(vector<int64_t>& a, bool stan){
         testing = neighbor;
         testing_residue = neighbor_residue;
       } else {
-        double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
-        double random_assign = (double)rand() / RAND_MAX;
-        if (random_assign < prob) {
-          testing = neighbor;
-          testing_residue = neighbor_residue;
-        }
+        random_assign(neighbor,testing,neighbor_residue,testing_residue);
       }
 
       if (testing_residue < current_residue) {
