@@ -21,7 +21,6 @@ int64_t residue_standard(vector<int64_t>& a, vector<bool>& s);
 vector<int> makerand_prepart(int n);
 vector<int> neighbor_prepart(vector<int>& p);
 vector<int64_t> partition(vector<int64_t>& a, vector<int>& p);
-int64_t residue_prepart(vector<int64_t>& a, vector<int>& p);
 
 int main(int argc, char *argv[]) {
 
@@ -142,15 +141,38 @@ int64_t residue_standard(vector<int64_t>& a, vector<bool>& s){
 
 }
 
+// returns prepartioning p
 vector<int> makerand_prepart(int n){
+  vector<int> p; //prepartition sequence with values 0 through n-1
+  for (int i=0; i<n; i++) {
+    p.push_back(rand() % n);
+  }
 
+  return p;
 }
 
+// takes prepartioning p, returns a neighbor solution
 vector<int> neighbor_prepart(vector<int>& p){
+  int n = v.size();
+  int i = rand() % n;
+  int j = rand() % n;
+  while (p[i] == j) {
+    i = rand() % n;
+    j = rand() % n;
+  }
+  vector<int> p_neighbor (p);
+  p_neighbor[i] = j;
 
+  return p_neighbor;
 }
 
-int64_t residue_prepart(vector<int64_t>& a, vector<int>& p){
+vector<int64_t> partition(vector<int64_t>& a, vector<int>& p) {
+  int n = a.size();
+  vector<int64_t> partitioned_sequence (n,0);
+  for (int j=0; j<n; j++) {
+    partitioned_sequence[p[j]] += a[j];
+  }
 
+  return partitioned_sequence;
 }
 
