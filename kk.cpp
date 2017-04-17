@@ -32,6 +32,15 @@ int main(int argc, char *argv[]) {
   }
 
   // open and read inputfile
+  vector<int64_t> a;
+  string fileName = argv[1];
+  string line;
+  ifstream infile(fileName);
+  if (infile.is_open()) {
+    while (getline (infile, line)) {
+      a.push_back(atoi(line.c_str()));
+    }
+  }
 
   // find and return result of running kk
 
@@ -114,7 +123,7 @@ int64_t climbing(vector<int64_t>& a, bool stan){
     }
   } else {
     vector<int> p = makerand_prepart(n);
-    
+
   }
 }
 
