@@ -13,6 +13,9 @@ using namespace std;
 
 int max_iter = 25000;
 
+void printVector(vector<int>& v);
+void printVector(vector<bool>& v);
+void printVector(vector<int64_t>& v);
 int64_t karkarp(vector<int64_t>& aprime);
 int64_t reprand(vector<int64_t>& a, bool stan);
 int64_t climbing(vector<int64_t>& a, bool stan);
@@ -50,9 +53,27 @@ int main(int argc, char *argv[]) {
 
     // for each, find the result using 7 different methods
 
-  cout << T(50) << endl;
+  cout << annealing(a,false) << endl;
 
   return 0;
+}
+
+void printVector(vector<int>& v) {
+  for(int i=0; i<v.size(); ++i)
+    cout << v[i] << ' ';
+  cout << endl;
+}
+
+void printVector(vector<bool>& v) {
+  for(int i=0; i<v.size(); ++i)
+    cout << v[i] << ' ';
+  cout << endl;
+}
+
+void printVector(vector<int64_t>& v) {
+  for(int i=0; i<v.size(); ++i)
+    cout << v[i] << ' ';
+  cout << endl;
 }
 
 int64_t karkarp(vector<int64_t>& aprime){
@@ -119,8 +140,9 @@ int64_t climbing(vector<int64_t>& a, bool stan){
   if (stan) {
     vector<bool> s = makerand_standard(n);
     resid = residue_standard(a,s);
+    vector<bool> neighbor;
     for (int i=0; i < max_iter; i++) {
-      vector<bool> neighbor = neighbor_standard(s);
+      neighbor = neighbor_standard(s);
       resid_neighbor = residue_standard(a, neighbor);
       if (resid_neighbor < resid) {
         s = neighbor;
@@ -131,8 +153,9 @@ int64_t climbing(vector<int64_t>& a, bool stan){
     vector<int> p = makerand_prepart(n);
     vector<int64_t> aprime = partition(a,p);
     resid = karkarp(aprime);
+    vector<int> neighbor;
     for (int i = 0; i < max_iter; i++) {
-      vector<int> neighbor = neighbor_prepart(p);
+      neighbor = neighbor_prepart(p);
       aprime = partition(a, neighbor);
       resid_neighbor = karkarp(aprime);
       if (resid_neighbor < resid) {
@@ -155,17 +178,18 @@ int64_t annealing(vector<int64_t>& a, bool stan){
   if (stan) {
     vector<bool> testing = makerand_standard(n); //S
     testing_residue = residue_standard(a,testing);
-    vector<bool> current = testing; //S''
+    vector<bool> current (testing); //S''
     current_residue = testing_residue;
 
+    vector<bool> neighbor;
     for (int i = 0; i < max_iter; i++) {
-      vector<bool> neighbor = neighbor_standard(testing); //S'
+      neighbor = neighbor_standard(testing); //S'
       neighbor_residue = residue_standard(a,neighbor); //S'
       if (neighbor_residue < testing_residue) {
         testing = neighbor;
         testing_residue = neighbor_residue;
       } else {
-        double prob = exp(-(neighbor_residue - testing_residue))/T(i+1);
+        double prob = exp(-(neighbor_residue - testing_residue)/T(i+1));
         double random_assign = (double)rand() / RAND_MAX;
         if (random_assign < prob) {
           testing = neighbor;
@@ -182,18 +206,19 @@ int64_t annealing(vector<int64_t>& a, bool stan){
     vector<int> testing = makerand_prepart(n); //P
     vector<int64_t> aprime = partition(a,testing);
     testing_residue = karkarp(aprime);
-    vector<int> current = testing; //P''
+    vector<int> current (testing); //P''
     current_residue = testing_residue;
 
+    vector<int> neighbor;
     for (int i = 0; i < max_iter; i++) {
-      vector<int> neighbor = neighbor_prepart(testing); //P'
+      neighbor = neighbor_prepart(testing); //P'
       aprime = partition(a, neighbor);
       neighbor_residue = karkarp(aprime); //P'
       if (neighbor_residue < testing_residue) {
         testing = neighbor;
         testing_residue = neighbor_residue;
       } else {
-        double prob = exp(-(neighbor_residue - testing_residue))/T(i+1);
+        double prob = exp(-(neighbor_residue - testing_residue)/T(i+1));
         double random_assign = (double)rand() / RAND_MAX;
         if (random_assign < prob) {
           testing = neighbor;
@@ -260,7 +285,7 @@ int64_t residue_standard(vector<int64_t>& a, vector<bool>& s){
       res -= a[i];
     }
   }
-  return res;
+  return abs(res);
 }
 
 // returns prepartioning p
