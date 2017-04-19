@@ -78,7 +78,6 @@ int main(int argc, char *argv[]) {
     cout << "annealing standard: " << annealing(randprob, true) << endl;
     cout << "annealing prepart: " << annealing(randprob, false) << endl;
 
-
   }
 
   return 0;
