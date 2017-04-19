@@ -7,11 +7,13 @@
 #include <fstream>
 #include <limits.h>
 #include <math.h>
+#include <random>
 #define DELTATIME(end, begin) (std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count()/1000.0)
 
 using namespace std;
 
-int max_iter = 25000;
+const int max_iter = 25000;
+const int64_t maxnum = pow(10, 12);
 
 void printVector(vector<int>& v);
 void printVector(vector<bool>& v);
@@ -46,10 +48,38 @@ int main(int argc, char *argv[]) {
       a.push_back(atoi(line.c_str()));
     }
   }
+  int n = a.size();
 
-  // find and return result of running kk
+  // find and return result of running kk, for original and 100 random instances
+  cout << "input karkarp: " << karkarp(a) << endl;
+  int instances = 100;
+  random_device rd;
+  default_random_engine generator(rd());
+  uniform_int_distribution<long long unsigned> distribution(0, 0xFFFFFFFFFFFFFFFF);
+  for (int i = 0; i < instances; i++){
+    cout << "Instance " << i << endl;
+    vector<int64_t> randprob;
+    for (int j = 0; j < n; j++){
+      randprob.push_back(distribution(generator) % maxnum + 1);
+    }
 
-  // generate 100 random instances
+    // print the result after karkarp
+    cout << "karkarp: " << karkarp(randprob) << endl;
+
+    // result after repeated random
+    cout << "reprand standard: " << reprand(randprob, true) << endl;
+    cout << "reprand prepart: " << reprand(randprob, false) << endl;
+
+    // hill climbing
+    cout << "hill climbing standard: " << climbing(randprob, true) << endl;
+    cout << "hill climbing prepart: " << climbing(randprob, false) << endl;
+
+    // simulated annealing
+    cout << "annealing standard: " << annealing(randprob, true) << endl;
+    cout << "annealing prepart: " << annealing(randprob, false) << endl;
+
+
+  }
 
     // for each, find the result using 7 different methods
 
@@ -105,10 +135,10 @@ int64_t reprand(vector<int64_t>& a, bool stan){
   int64_t resid;
 
   if (stan) {
-    vector<bool> s = makerand_standard(n);
-    resid = residue_standard(a, s);
+    vector<bool> s_new;
+    resid = INFINITY;
     for (int i = 0; i < max_iter; i++){
-      vector<bool> s_new = makerand_standard(n);
+      s_new = makerand_standard(n);
       int64_t resid_new = residue_standard(a, s_new);
       if (resid_new < resid){
         resid = resid_new;
@@ -116,11 +146,11 @@ int64_t reprand(vector<int64_t>& a, bool stan){
     }
   }
   else {
-    vector<int> p = makerand_prepart(n);
-    vector<int64_t> aprime = partition(a, p);
-    resid = karkarp(aprime);
+    vector<int> p_new;
+    vector<int64_t> aprime;
+    resid = INFINITY;
     for (int i = 0; i < max_iter; i++){
-      vector<int> p_new = makerand_prepart(n);
+      p_new = makerand_prepart(n);
       aprime = partition(a, p_new);
       int64_t resid_new = karkarp(aprime);
       if (resid_new < resid){
