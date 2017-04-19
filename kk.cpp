@@ -17,6 +17,7 @@ int64_t karkarp(vector<int64_t>& aprime);
 int64_t reprand(vector<int64_t>& a, bool stan);
 int64_t climbing(vector<int64_t>& a, bool stan);
 int64_t annealing(vector<int64_t>& a, bool stan);
+double T(int iter);
 vector<bool> makerand_standard(int n);
 vector<bool> neighbor_standard(vector<bool>& s);
 int64_t residue_standard(vector<int64_t>& a, vector<bool>& s);
@@ -49,7 +50,7 @@ int main(int argc, char *argv[]) {
 
     // for each, find the result using 7 different methods
 
-  cout << "hello!" << endl;
+  cout << T(50) << endl;
 
   return 0;
 }
@@ -164,7 +165,7 @@ int64_t annealing(vector<int64_t>& a, bool stan){
         testing = neighbor;
         testing_residue = neighbor_residue;
       } else {
-        double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
+        double prob = exp(-(neighbor_residue - testing_residue))/T(i+1);
         double random_assign = (double)rand() / RAND_MAX;
         if (random_assign < prob) {
           testing = neighbor;
@@ -192,7 +193,7 @@ int64_t annealing(vector<int64_t>& a, bool stan){
         testing = neighbor;
         testing_residue = neighbor_residue;
       } else {
-        double prob = exp(-(neighbor_residue - testing_residue))/(i+1);
+        double prob = exp(-(neighbor_residue - testing_residue))/T(i+1);
         double random_assign = (double)rand() / RAND_MAX;
         if (random_assign < prob) {
           testing = neighbor;
@@ -208,6 +209,10 @@ int64_t annealing(vector<int64_t>& a, bool stan){
   }
 
   return current_residue;
+}
+
+double T(int iter) {
+  return pow(10,10)*pow(0.8,floor(iter/300));
 }
 
 vector<bool> makerand_standard(int n){
