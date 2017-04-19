@@ -56,28 +56,39 @@ int main(int argc, char *argv[]) {
   random_device rd;
   default_random_engine generator(rd());
   uniform_int_distribution<long long unsigned> distribution(0, 0xFFFFFFFFFFFFFFFF);
+
+  //printed header
+  cout << "karkarp, reprand standard, reprand prepart, hill climb standard, hill climb prepart, anneal standard, anneal prepart" << endl;
+
   for (int i = 0; i < instances; i++){
-    cout << "Instance " << i << endl;
+    //cout << "Instance " << i << endl;
     vector<int64_t> randprob;
     for (int j = 0; j < n; j++){
       randprob.push_back(distribution(generator) % maxnum + 1);
     }
 
-    // print the result after karkarp
-    cout << "karkarp: " << karkarp(randprob) << endl;
+    // // print the result after karkarp
+    // cout << "karkarp: " << karkarp(randprob) << endl;
 
-    // result after repeated random
-    cout << "reprand standard: " << reprand(randprob, true) << endl;
-    cout << "reprand prepart: " << reprand(randprob, false) << endl;
+    // // result after repeated random
+    // cout << "reprand standard: " << reprand(randprob, true) << endl;
+    // cout << "reprand prepart: " << reprand(randprob, false) << endl;
 
-    // hill climbing
-    cout << "hill climbing standard: " << climbing(randprob, true) << endl;
-    cout << "hill climbing prepart: " << climbing(randprob, false) << endl;
+    // // hill climbing
+    // cout << "hill climbing standard: " << climbing(randprob, true) << endl;
+    // cout << "hill climbing prepart: " << climbing(randprob, false) << endl;
 
-    // simulated annealing
-    cout << "annealing standard: " << annealing(randprob, true) << endl;
-    cout << "annealing prepart: " << annealing(randprob, false) << endl;
+    // // simulated annealing
+    // cout << "annealing standard: " << annealing(randprob, true) << endl;
+    // cout << "annealing prepart: " << annealing(randprob, false) << endl;
 
+    cout << karkarp(randprob) << ",";
+    cout << reprand(randprob, true) << ",";
+    cout << reprand(randprob, false) << ",";
+    cout << climbing(randprob, true) << ",";
+    cout << climbing(randprob, false) << ",";
+    cout << annealing(randprob, true) << ",";
+    cout << annealing(randprob, false) << endl;
   }
 
   return 0;
