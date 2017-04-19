@@ -81,10 +81,6 @@ int main(int argc, char *argv[]) {
 
   }
 
-    // for each, find the result using 7 different methods
-
-  cout << annealing(a,false) << endl;
-
   return 0;
 }
 
