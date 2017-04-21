@@ -15,19 +15,27 @@ using namespace std;
 const int max_iter = 100000;
 const int64_t maxnum = pow(10, 12);
 
-void printVector(vector<int>& v);
-void printVector(vector<bool>& v);
-void printVector(vector<int64_t>& v);
+//implements the Karmarkar-Karp algorithm
 int64_t karkarp(vector<int64_t>& aprime);
+//implements repeated random method
 int64_t reprand(vector<int64_t>& a, bool stan);
+//implements hill climbing
 int64_t climbing(vector<int64_t>& a, bool stan);
+//implements simulated annealing
 int64_t annealing(vector<int64_t>& a, bool stan);
+//calculates T(iter)
 double T(int iter);
+//creates a random standard solution
 vector<bool> makerand_standard(int n);
+//finds a random neighbor for a given standard solution
 vector<bool> neighbor_standard(vector<bool>& s);
+//finds the residue for a given standard solution and problem
 int64_t residue_standard(vector<int64_t>& a, vector<bool>& s);
+//creates a random prepartitioning solution
 vector<int> makerand_prepart(int n);
+//finds a random neighbor for a given prepartitioned solution
 vector<int> neighbor_prepart(vector<int>& p);
+//creates a new set of numbers A' from a given partition and A
 vector<int64_t> partition(vector<int64_t>& a, vector<int>& p);
 
 int main(int argc, char *argv[]) {
@@ -106,24 +114,6 @@ int main(int argc, char *argv[]) {
   // }
 
   return 0;
-}
-
-void printVector(vector<int>& v) {
-  for(int i=0; i<v.size(); ++i)
-    cout << v[i] << ' ';
-  cout << endl;
-}
-
-void printVector(vector<bool>& v) {
-  for(int i=0; i<v.size(); ++i)
-    cout << v[i] << ' ';
-  cout << endl;
-}
-
-void printVector(vector<int64_t>& v) {
-  for(int i=0; i<v.size(); ++i)
-    cout << v[i] << ' ';
-  cout << endl;
 }
 
 int64_t karkarp(vector<int64_t>& aprime){
