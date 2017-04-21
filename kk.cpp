@@ -12,7 +12,7 @@
 
 using namespace std;
 
-const int max_iter = 25000;
+const int max_iter = 100000;
 const int64_t maxnum = pow(10, 12);
 
 void printVector(vector<int>& v);
@@ -51,45 +51,59 @@ int main(int argc, char *argv[]) {
   int n = a.size();
 
   // find and return result of running kk, for original and 100 random instances
-  cout << "input karkarp: " << karkarp(a) << endl;
-  int instances = 100;
-  random_device rd;
-  default_random_engine generator(rd());
-  uniform_int_distribution<long long unsigned> distribution(0, 0xFFFFFFFFFFFFFFFF);
+  cout << karkarp(a) << endl;
 
-  //printed header
-  cout << "karkarp, reprand standard, reprand prepart, hill climb standard, hill climb prepart, anneal standard, anneal prepart" << endl;
+  // int instances = 100;
+  // random_device rd;
+  // default_random_engine generator(rd());
+  // uniform_int_distribution<long long unsigned> distribution(0, 0xFFFFFFFFFFFFFFFF);
 
-  for (int i = 0; i < instances; i++){
-    //cout << "Instance " << i << endl;
-    vector<int64_t> randprob;
-    for (int j = 0; j < n; j++){
-      randprob.push_back(distribution(generator) % maxnum + 1);
-    }
+  // printed header
+  // cout << "karkarp, reprand standard, reprand prepart, hill climb standard, hill climb prepart, anneal standard, anneal prepart" << endl;
 
-    // // print the result after karkarp
-    // cout << "karkarp: " << karkarp(randprob) << endl;
+  // for (int i = 0; i < instances; i++){
+  //   //cout << "Instance " << i << endl;
+  //   vector<int64_t> randprob;
+  //   for (int j = 0; j < n; j++){
+  //     randprob.push_back(distribution(generator) % maxnum + 1);
+  //   }
 
-    // // result after repeated random
-    // cout << "reprand standard: " << reprand(randprob, true) << endl;
-    // cout << "reprand prepart: " << reprand(randprob, false) << endl;
+  //   // test timing all methods
+  //   auto begin1 = std::chrono::high_resolution_clock::now();
+  //   karkarp(randprob);
+  //   auto end1 = std::chrono::high_resolution_clock::now();
+  //   cout << DELTATIME(end1,begin1) << ",";
 
-    // // hill climbing
-    // cout << "hill climbing standard: " << climbing(randprob, true) << endl;
-    // cout << "hill climbing prepart: " << climbing(randprob, false) << endl;
+  //   begin1 = std::chrono::high_resolution_clock::now();
+  //   reprand(randprob, true);
+  //   end1 = std::chrono::high_resolution_clock::now();
+  //   cout << DELTATIME(end1,begin1) << ",";
 
-    // // simulated annealing
-    // cout << "annealing standard: " << annealing(randprob, true) << endl;
-    // cout << "annealing prepart: " << annealing(randprob, false) << endl;
+  //   begin1 = std::chrono::high_resolution_clock::now();
+  //   reprand(randprob, false);
+  //   end1 = std::chrono::high_resolution_clock::now();
+  //   cout << DELTATIME(end1,begin1) << ",";
 
-    cout << karkarp(randprob) << ",";
-    cout << reprand(randprob, true) << ",";
-    cout << reprand(randprob, false) << ",";
-    cout << climbing(randprob, true) << ",";
-    cout << climbing(randprob, false) << ",";
-    cout << annealing(randprob, true) << ",";
-    cout << annealing(randprob, false) << endl;
-  }
+  //   begin1 = std::chrono::high_resolution_clock::now();
+  //   climbing(randprob, true);
+  //   end1 = std::chrono::high_resolution_clock::now();
+  //   cout << DELTATIME(end1,begin1) << ",";
+
+  //   begin1 = std::chrono::high_resolution_clock::now();
+  //   climbing(randprob, false);
+  //   end1 = std::chrono::high_resolution_clock::now();
+  //   cout << DELTATIME(end1,begin1) << ",";
+
+  //   begin1 = std::chrono::high_resolution_clock::now();
+  //   annealing(randprob, true);
+  //   end1 = std::chrono::high_resolution_clock::now();
+  //   cout << DELTATIME(end1,begin1) << ",";
+
+  //   begin1 = std::chrono::high_resolution_clock::now();
+  //   annealing(randprob, false);
+  //   end1 = std::chrono::high_resolution_clock::now();
+  //   cout << DELTATIME(end1,begin1) << endl;
+  // }
 
   return 0;
 }
